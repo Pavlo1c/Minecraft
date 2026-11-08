@@ -1,4 +1,4 @@
-name: Build ServerKeepAwake
+name: ServerKeepAwake | NeoForge 1.21.1 (21.1.265)
 
 on:
   push:
@@ -14,6 +14,7 @@ permissions:
 
 jobs:
   build-neoforge-1-21-1:
+    name: ServerKeepAwake v1.0.1 — NeoForge 1.21.1 / 21.1.265
     runs-on: ubuntu-latest
     defaults:
       run:
