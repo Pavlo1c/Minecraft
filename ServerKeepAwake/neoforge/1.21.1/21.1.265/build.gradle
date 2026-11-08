@@ -1,6 +1,7 @@
 plugins {
     id 'java-library'
     id 'net.neoforged.gradle.userdev' version '7.1.38'
+    id 'com.gradleup.shadow' version '8.3.6'
 }
 
 group = mod_group_id
@@ -27,13 +28,7 @@ runs {
 
 dependencies {
     implementation "net.neoforged:neoforge:${neo_version}"
-    jarJar(implementation('net.java.dev.jna:jna:5.14.0')) {
-        version {
-            strictly '[5.14.0,5.15.0)'
-            prefer '5.14.0'
-        }
-    }
-    runtimeOnly 'net.java.dev.jna:jna:5.14.0'
+    implementation 'net.java.dev.jna:jna:5.14.0'
 }
 
 processResources {
@@ -53,14 +48,17 @@ processResources {
     }
 }
 
-jar {
-    manifest {
-        attributes([
-                'Specification-Title': mod_name,
-                'Specification-Vendor': 'Pavlo',
-                'Specification-Version': '1',
-                'Implementation-Title': project.name,
-                'Implementation-Version': project.version
-        ])
-    }
+tasks.named('jar', Jar).configure {
+    archiveClassifier.set('thin')
+}
+
+tasks.named('shadowJar', com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar).configure {
+    archiveClassifier.set('all')
+    relocate 'com.sun.jna', 'com.pavlo.serverkeepawake.internal.jna'
+    exclude 'module-info.class'
+    mergeServiceFiles()
+}
+
+tasks.named('build').configure {
+    dependsOn tasks.named('shadowJar')
 }
