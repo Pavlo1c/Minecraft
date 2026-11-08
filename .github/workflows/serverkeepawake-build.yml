@@ -47,7 +47,7 @@ jobs:
       - name: Prepare compatibility-labelled JAR
         run: |
           mkdir -p dist
-          cp "build/libs/serverkeepawake-${MOD_VERSION}-all.jar" "dist/ServerKeepAwake-neoforge-MC${MC_VERSION}-NF${NEOFORGE_VERSION}-v${MOD_VERSION}.jar"
+          cp "build/libs/serverkeepawake-${MOD_VERSION}.jar" "dist/ServerKeepAwake-neoforge-MC${MC_VERSION}-NF${NEOFORGE_VERSION}-v${MOD_VERSION}.jar"
           test -s "dist/ServerKeepAwake-neoforge-MC${MC_VERSION}-NF${NEOFORGE_VERSION}-v${MOD_VERSION}.jar"
 
       - name: Upload JAR artifact
