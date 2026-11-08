@@ -26,9 +26,14 @@ runs {
     }
 }
 
+configurations {
+    jnaShadow
+}
+
 dependencies {
     implementation "net.neoforged:neoforge:${neo_version}"
     implementation 'net.java.dev.jna:jna:5.14.0'
+    jnaShadow 'net.java.dev.jna:jna:5.14.0'
 }
 
 processResources {
@@ -54,6 +59,7 @@ tasks.named('jar', Jar).configure {
 
 tasks.named('shadowJar', com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar).configure {
     archiveClassifier.set('all')
+    configurations = [project.configurations.jnaShadow]
     relocate 'com.sun.jna', 'com.pavlo.serverkeepawake.internal.jna'
     exclude 'module-info.class'
     mergeServiceFiles()
