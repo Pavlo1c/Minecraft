@@ -32,7 +32,7 @@ configurations {
 
 dependencies {
     implementation "net.neoforged:neoforge:${neo_version}"
-    implementation 'net.java.dev.jna:jna:5.14.0'
+    compileOnly 'net.java.dev.jna:jna:5.14.0'
     jnaShadow 'net.java.dev.jna:jna:5.14.0'
 }
 
