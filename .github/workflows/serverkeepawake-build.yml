@@ -36,11 +36,14 @@ jobs:
       - name: Build mod
         run: gradle build --no-daemon
 
-      - name: Upload JAR artifact
+      - name: Verify distributable JAR
+        run: test -s build/libs/serverkeepawake-1.0.0-all.jar
+
+      - name: Upload distributable JAR
         uses: actions/upload-artifact@v4
         with:
           name: ServerKeepAwake-${{ github.sha }}
-          path: ServerKeepAwake/build/libs/*.jar
+          path: ServerKeepAwake/build/libs/*-all.jar
           if-no-files-found: error
           retention-days: 14
 
@@ -48,5 +51,5 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/serverkeepawake-v')
         uses: softprops/action-gh-release@v2
         with:
-          files: ServerKeepAwake/build/libs/*.jar
+          files: ServerKeepAwake/build/libs/*-all.jar
           generate_release_notes: true
