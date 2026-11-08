@@ -1,0 +1,52 @@
+name: Build ServerKeepAwake
+
+on:
+  push:
+    paths:
+      - "ServerKeepAwake/**"
+      - ".github/workflows/serverkeepawake-build.yml"
+    tags:
+      - "serverkeepawake-v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ServerKeepAwake
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: gradle
+          cache-dependency-path: ServerKeepAwake/**/*.gradle*
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build mod
+        run: gradle build --no-daemon
+
+      - name: Upload JAR artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ServerKeepAwake-${{ github.sha }}
+          path: ServerKeepAwake/build/libs/*.jar
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Publish GitHub Release
+        if: startsWith(github.ref, 'refs/tags/serverkeepawake-v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ServerKeepAwake/build/libs/*.jar
+          generate_release_notes: true
