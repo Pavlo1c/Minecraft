@@ -46,18 +46,3 @@ processResources {
         expand replaceProperties
     }
 }
-
-tasks.named('jar', Jar).configure {
-    archiveClassifier.set('thin')
-}
-
-tasks.named('shadowJar', com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar).configure {
-    archiveClassifier.set('all')
-    configurations = [project.configurations.jnaShadow]
-    exclude 'module-info.class'
-    mergeServiceFiles()
-}
-
-tasks.named('build').configure {
-    dependsOn tasks.named('shadowJar')
-}
